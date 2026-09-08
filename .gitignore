@@ -1,0 +1,5 @@
+*.xlsx
+assets/sample_*
+desktop.ini
+.DS_Store
+Thumbs.db

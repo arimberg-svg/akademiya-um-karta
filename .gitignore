@@ -1,5 +1,10 @@
 *.xlsx
+*.pptx
 assets/sample_*
+assets/pptx/
+_extract_pptx.py
+_patch_html.py
+_pptx_dump.txt
 desktop.ini
 .DS_Store
 Thumbs.db

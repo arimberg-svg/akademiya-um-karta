@@ -235,6 +235,7 @@ h3 {
   color: var(--violet-700);
 }
 .note { color: var(--muted); font-weight: 600; margin: 0 0 16px; }
+.note a { color: var(--violet-800); font-weight: 800; }
 
 .panel {
   background: var(--paper);

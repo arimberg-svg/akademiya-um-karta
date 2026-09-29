@@ -428,6 +428,13 @@ h3 {
 }
 .cal-weeks li { margin: 0 0 7px; }
 .cal-weeks li:last-child { margin: 0; }
+.cal-weeks a {
+  color: var(--violet-800);
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.map a { color: var(--violet-800); font-weight: 800; }
 
 .kb {
   list-style: none;

@@ -205,8 +205,13 @@
 
     <section id="volny" class="panel cal-panel">
       <p class="who">Календарь · 7 блоков до 31.12.2026</p>
-      <h2>Неделя за неделей. Сделанное уже в ленте.</h2>
-      <p class="note">Сейчас 28 сентября — 4 октября. Дальше: СТМ до 31.10, в октябре параллельно тест кладовщиков РЦ, в ноябре — кассиры сети (поле 5 и 6 ноября в магазине Решетникова, Березняки). В декабре — аттестация кладовщиков сети по производственному календарю: слоты только в рабочие дни, закрытие до 30 декабря. 31 декабря 2026 — нерабочий (перенос выходного с 4 января).</p>
+      <h2 class="cal-title">Неделя за неделей.<span>Сделанное уже в ленте.</span></h2>
+      <p class="cal-lead">Сейчас 28 сентября — 4 октября. Дальше: СТМ до 31.10, в октябре параллельно тест кладовщиков РЦ, в ноябре — кассиры сети (поле 5 и 6 ноября в магазине Решетникова, Березняки). В декабре — аттестация кладовщиков сети по производственному календарю: слоты только в рабочие дни, закрытие до 30 декабря. 31 декабря 2026 — нерабочий (перенос выходного с 4 января).</p>
+      <p class="cal-legend">
+        <span class="lg-done">Сделано</span>
+        <span class="lg-now">Сейчас делаем</span>
+        <span class="lg-next">Дальше в плане</span>
+      </p>
 
       <div class="cal-scroll">
         <div class="cal">
@@ -224,7 +229,7 @@
                   <li>Банк теста СПК: регламенты + внутренние обучения + поставщики</li>
                   <li>Порог, окно сдачи, инструкция супервайзерам</li>
                   <li>Анонс: в сентябре сдают все СПК, без исключений</li>
-                  <li><a href="https://akademia.um-ural.ru/grafik-otpuskov-2026/spk-calendar.html" style="color:inherit;font-weight:700">Общий календарь отпусков всех СПК</a> (список 02.09, до 31.12)</li>
+                  <li><a href="https://akademia.um-ural.ru/grafik-otpuskov-2026/spk-calendar.html">Общий календарь отпусков всех СПК</a> (список 02.09, до 31.12)</li>
                 </ul>
               </article>
               <article class="done">
@@ -253,7 +258,7 @@
               </article>
               <article class="now">
                 <header>
-                  <p class="who">Неделя 4 · сейчас</p>
+                  <p class="who">Неделя 4</p>
                   <h3>28 сентября — 4 октября</h3>
                 </header>
                 <ul>
@@ -269,7 +274,7 @@
           <div class="cal-month">
             <p class="cal-label">Октябрь · СТМ + кладовщики РЦ</p>
             <div class="cal-weeks">
-              <article>
+              <article class="next">
                 <header>
                   <p class="who">Неделя 5</p>
                   <h3>5–11 октября</h3>
@@ -281,7 +286,7 @@
                   <li>СТМ: микрокурсы, аналоги, скрипт, банк теста</li>
                 </ul>
               </article>
-              <article>
+              <article class="next">
                 <header>
                   <p class="who">Неделя 6</p>
                   <h3>12–18 октября</h3>
@@ -293,7 +298,7 @@
                   <li>Блок 4: микрокурс «зачем мне это в чеке» — каркас</li>
                 </ul>
               </article>
-              <article>
+              <article class="next">
                 <header>
                   <p class="who">Неделя 7</p>
                   <h3>19–25 октября</h3>
@@ -305,7 +310,7 @@
                   <li>Правило: претензия/сезон → короткий курс за 2 дня</li>
                 </ul>
               </article>
-              <article>
+              <article class="next">
                 <header>
                   <p class="who">Неделя 8 · запуск</p>
                   <h3>26–31 октября</h3>
@@ -323,7 +328,7 @@
           <div class="cal-month">
             <p class="cal-label">Ноябрь · кассиры сети</p>
             <div class="cal-weeks">
-              <article class="ext">
+              <article class="next">
                 <header>
                   <p class="who">Неделя 9 · поле</p>
                   <h3>2–8 ноября</h3>
@@ -335,7 +340,7 @@
                   <li>Блок 4: каркас микрокурса продаж «зачем в чеке»</li>
                 </ul>
               </article>
-              <article class="ext">
+              <article class="next">
                 <header>
                   <p class="who">Неделя 10</p>
                   <h3>9–15 ноября</h3>
@@ -347,7 +352,7 @@
                   <li>Блок 5: шаблон ИПР и план испытательного</li>
                 </ul>
               </article>
-              <article class="ext">
+              <article class="next">
                 <header>
                   <p class="who">Неделя 11</p>
                   <h3>16–22 ноября</h3>
@@ -359,7 +364,7 @@
                   <li>Обучение от поставщика №1</li>
                 </ul>
               </article>
-              <article class="ext">
+              <article class="next">
                 <header>
                   <p class="who">Неделя 12</p>
                   <h3>23–29 ноября</h3>
@@ -377,7 +382,7 @@
           <div class="cal-month">
             <p class="cal-label">Декабрь · аттестация кладовщиков сети</p>
             <div class="cal-weeks">
-              <article class="ext">
+              <article class="next">
                 <header>
                   <p class="who">Неделя 13</p>
                   <h3>30 ноября — 6 декабря</h3>
@@ -389,7 +394,7 @@
                   <li>Блок 7: пилот пульса на одном кусте</li>
                 </ul>
               </article>
-              <article class="ext">
+              <article class="next">
                 <header>
                   <p class="who">Неделя 14</p>
                   <h3>7–13 декабря</h3>
@@ -401,7 +406,7 @@
                   <li>СПК — повтор через 3 месяца после сентября</li>
                 </ul>
               </article>
-              <article class="ext">
+              <article class="next">
                 <header>
                   <p class="who">Неделя 15</p>
                   <h3>14–20 декабря</h3>
@@ -413,7 +418,7 @@
                   <li>Блок 7: пульс на всю сеть</li>
                 </ul>
               </article>
-              <article class="ext">
+              <article class="next">
                 <header>
                   <p class="who">Неделя 16</p>
                   <h3>21–30 декабря</h3>

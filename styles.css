@@ -369,64 +369,118 @@ h3 {
 .pyramid p { margin: 0; color: var(--muted); font-weight: 600; font-size: 13.5px; }
 
 .cal-panel { overflow: hidden; }
+.cal-title {
+  font-family: var(--display);
+  font-weight: 800;
+  font-size: clamp(32px, 5.2vw, 48px);
+  line-height: 1.12;
+  letter-spacing: -0.03em;
+  margin: 0 0 14px;
+  max-width: 18ch;
+}
+.cal-title span {
+  display: block;
+  margin-top: 4px;
+}
+.cal-lead {
+  margin: 0 0 18px;
+  max-width: 72ch;
+  font-size: 17px;
+  line-height: 1.55;
+  font-weight: 600;
+  color: var(--ink);
+}
+.cal-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 0 18px;
+}
+.cal-legend span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 8px 14px;
+  border-radius: 999px;
+}
+.lg-done {
+  color: #4208A8;
+  background: #EDE6FA;
+  border: 1px solid rgba(66, 8, 168, 0.22);
+}
+.lg-now {
+  color: #fff;
+  background: #4208A8;
+  border: 1px solid #4208A8;
+}
+.lg-next {
+  color: #4208A8;
+  background: #fff;
+  border: 2px solid #4208A8;
+}
 .cal-scroll {
   overflow-x: auto;
   margin: 4px -6px 0;
-  padding: 2px 6px 14px;
+  padding: 8px 6px 18px;
   scrollbar-width: thin;
-  scrollbar-color: #4208A8 #efe9ff;
+  scrollbar-color: #4208A8 #EDE6FA;
 }
 .cal {
   display: flex;
-  gap: 20px;
+  gap: 22px;
   align-items: stretch;
   width: max-content;
 }
 .cal-month {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 .cal-label {
   margin: 0;
   font-family: var(--display);
-  font-size: 13px;
-  letter-spacing: 0.02em;
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: -0.02em;
   color: var(--violet-800);
 }
 .cal-weeks {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: stretch;
 }
 .cal-weeks article {
-  flex: 0 0 228px;
-  width: 228px;
-  border: 1px solid var(--stroke);
-  border-radius: 16px;
+  flex: 0 0 272px;
+  width: 272px;
+  border-radius: 18px;
   overflow: hidden;
-  background: #fff;
   display: flex;
   flex-direction: column;
 }
 .cal-weeks header {
-  padding: 14px 16px 12px;
-  color: #fff;
-  background: linear-gradient(160deg, #2a0868, #4208A8);
+  padding: 16px 18px 14px;
 }
-.cal-weeks article.done header { background: linear-gradient(160deg, #2a0868, #3d2a6e); opacity: 0.92; }
-.cal-weeks article.now header { background: linear-gradient(160deg, #4208A8, #1a1033); }
-.cal-weeks article.ext header { background: linear-gradient(160deg, #1a1033, #4208A8); }
-.cal-weeks header .who { color: #ffffff; }
-.cal-weeks header h3 { color: #fff; font-size: 15px; margin: 0; line-height: 1.25; }
+.cal-weeks header .who {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+}
+.cal-weeks header h3 {
+  font-size: 19px;
+  margin: 4px 0 0;
+  line-height: 1.25;
+  font-weight: 800;
+}
 .cal-weeks ul {
   margin: 0;
-  padding: 12px 14px 14px 28px;
-  font-size: 13px;
+  padding: 16px 18px 18px 32px;
+  font-size: 15px;
+  line-height: 1.45;
   font-weight: 600;
   flex: 1;
 }
-.cal-weeks li { margin: 0 0 7px; }
+.cal-weeks li { margin: 0 0 9px; }
 .cal-weeks li:last-child { margin: 0; }
 .cal-weeks a {
   color: var(--violet-800);
@@ -434,6 +488,54 @@ h3 {
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+.cal-weeks article.done header .who::before,
+.cal-weeks article.now header .who::before,
+.cal-weeks article.next header .who::before {
+  display: block;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.cal-weeks article.done {
+  background: #EDE6FA;
+  border: 1px solid rgba(66, 8, 168, 0.2);
+}
+.cal-weeks article.done header {
+  background: #DDD2F5;
+  color: #4208A8;
+}
+.cal-weeks article.done header .who,
+.cal-weeks article.done header h3 { color: #4208A8; }
+.cal-weeks article.done header .who::before { content: "Сделано"; }
+.cal-weeks article.done ul { color: #1a1033; }
+.cal-weeks article.now {
+  background: #fff;
+  border: 3px solid #4208A8;
+  box-shadow: 0 16px 36px rgba(66, 8, 168, 0.22);
+  flex-basis: 292px;
+  width: 292px;
+}
+.cal-weeks article.now header {
+  background: #4208A8;
+  color: #fff;
+}
+.cal-weeks article.now header .who,
+.cal-weeks article.now header h3 { color: #fff; }
+.cal-weeks article.now header .who::before { content: "Сейчас делаем"; color: #fff; }
+.cal-weeks article.now ul { color: #1a1033; }
+.cal-weeks article.next {
+  background: #fff;
+  border: 2px solid #4208A8;
+}
+.cal-weeks article.next header {
+  background: #4208A8;
+  color: #fff;
+}
+.cal-weeks article.next header .who,
+.cal-weeks article.next header h3 { color: #fff; }
+.cal-weeks article.next header .who::before { content: "В плане"; color: #fff; }
+.cal-weeks article.next ul { color: #1a1033; }
 .map a { color: var(--violet-800); font-weight: 800; }
 
 .kb {
@@ -514,7 +616,8 @@ footer.page {
 @media (max-width: 720px) {
   .goals, .map, .split, .tree, .perks, .pptx-cards, .steps, .life { grid-template-columns: 1fr; }
   .brand-tag { display: none; }
-  .cal-weeks article { flex-basis: 200px; width: 200px; }
+  .cal-weeks article { flex-basis: 240px; width: 240px; }
+  .cal-weeks article.now { flex-basis: 256px; width: 256px; }
 }
 @media print {
   .glow, .top, .toc { display: none !important; }

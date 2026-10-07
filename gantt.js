@@ -4,6 +4,8 @@
   var START = new Date(2026, 7, 1);
   var END = new Date(2027, 0, 31);
   var TOTAL = Math.round((END - START) / 86400000) + 1;
+  var PX_DAY = 12;
+  var TIME_W = TOTAL * PX_DAY;
 
   var MONTHS = [
     { label: "Август", days: 31 },
@@ -114,6 +116,32 @@
           hint: "ИПР и испытательный, шаблон на роли",
           start: "2026-11-09",
           end: "2026-11-29",
+          status: "next",
+        },
+        {
+          id: "preboard",
+          label: "Пребординг",
+          hint: "Письмо, доступы, наставник до первого дня. Ноябрь",
+          start: "2026-11-02",
+          end: "2026-11-29",
+          status: "next",
+          deps: ["mentors-list"],
+        },
+        {
+          id: "adapt60",
+          label: "Чек-листы 30–60–90",
+          hint: "Точка 60 и проверяемые результаты по ролям. Ноябрь–декабрь",
+          start: "2026-11-09",
+          end: "2026-12-18",
+          status: "next",
+          deps: ["mentors-list"],
+        },
+        {
+          id: "metrics",
+          label: "Метрики Академии",
+          hint: "Считает руководитель Академии. Снимок в ноябре, четыре числа в декабре",
+          start: "2026-11-02",
+          end: "2026-12-30",
           status: "next",
         },
         {
@@ -250,27 +278,40 @@
     return a + " — " + b;
   }
 
-  function render() {
-    var root = document.getElementById("gantt-root");
-    if (!root) return;
+  var STATUS_RU = {
+    done: "Сделано",
+    now: "Сейчас",
+    next: "В плане",
+    future: "Будущее карты",
+  };
 
-    var html = '<div class="gantt-shell">';
-    html += '<div class="gantt-head">';
-    html += '<div class="gantt-col-label"><span>Проекты</span></div>';
-    html += '<div class="gantt-col-time">';
-    html += '<div class="gantt-months">';
-    MONTHS.forEach(function (m) {
-      html +=
-        '<div class="gantt-month' +
-        (m.future ? " gantt-month-future" : "") +
-        '" style="flex:' +
-        m.days +
-        ' 0 0"><span>' +
-        esc(m.label) +
-        "</span></div>";
+  function renderCards() {
+    var box = document.getElementById("proj-cards");
+    if (!box) return;
+    var rows = GROUPS[0].rows;
+    var html = '<div class="proj-grid">';
+    rows.forEach(function (row, i) {
+      var n = i + 1;
+      var dep = row.deps && row.deps.length ? depLabel(row.deps) : "";
+      html += '<article class="proj-card proj-' + row.status + '">';
+      html += '<div class="proj-top">';
+      html += '<div class="proj-mark" aria-hidden="true"></div>';
+      html += '<span class="proj-line" aria-hidden="true"></span>';
+      html += '<span class="proj-num">' + n + "</span>";
+      html += "</div>";
+      html += '<p class="proj-status">' + esc(STATUS_RU[row.status] || "") + "</p>";
+      html += "<h3>" + esc(row.label) + "</h3>";
+      html += '<p class="proj-dates">' + esc(fmtRange(row.start, row.end)) + "</p>";
+      if (row.hint) html += '<p class="proj-text">' + esc(row.hint) + "</p>";
+      if (dep) html += '<p class="proj-after">После: ' + esc(dep) + "</p>";
+      html += "</article>";
     });
     html += "</div>";
-    html += '<div class="gantt-mile-line">';
+    box.innerHTML = html;
+  }
+
+  function timeBands() {
+    var html = "";
     PAUSES.forEach(function (p) {
       html +=
         '<div class="gantt-pause-band" style="left:' +
@@ -279,7 +320,7 @@
         pctWidth(p.start, p.end) +
         '%" title="' +
         esc(p.label) +
-        ': встреч и задач нет"></div>';
+        '"></div>';
     });
     html +=
       '<div class="gantt-future-band" style="left:' +
@@ -289,9 +330,51 @@
       '%" title="' +
       esc(FUTURE.label) +
       '"></div>';
-    MILESTONES.forEach(function (m) {
+    var now = new Date();
+    now.setHours(0, 0, 0, 0);
+    if (now >= START && now <= END) {
+      var y = now.getFullYear();
+      var mo = now.getMonth() + 1;
+      var d = now.getDate();
+      mo = (mo < 10 ? "0" : "") + mo;
+      d = (d < 10 ? "0" : "") + d;
       html +=
-        '<div class="gantt-mile" style="left:' +
+        '<div class="gantt-today" style="left:' +
+        pctDay(y + "-" + mo + "-" + d) +
+        '%" title="Сегодня"></div>';
+    }
+    return html;
+  }
+
+  function render() {
+    renderCards();
+    var root = document.getElementById("gantt-root");
+    if (!root) return;
+
+    var html =
+      '<div class="gantt-shell" style="--gantt-time-w:' + TIME_W + 'px">';
+    html += '<div class="gantt-head">';
+    html += '<div class="gantt-col-label"><span>Проект</span></div>';
+    html += '<div class="gantt-col-time">';
+    html += timeBands();
+    html += '<div class="gantt-months">';
+    MONTHS.forEach(function (m) {
+      html +=
+        '<div class="gantt-month' +
+        (m.future ? " gantt-month-future" : "") +
+        '" style="width:' +
+        m.days * PX_DAY +
+        'px"><span>' +
+        esc(m.label) +
+        "</span></div>";
+    });
+    html += "</div>";
+    html += '<div class="gantt-mile-line">';
+    MILESTONES.forEach(function (m, i) {
+      html +=
+        '<div class="gantt-mile' +
+        (i % 2 ? " mile-alt" : "") +
+        '" style="left:' +
         pctDay(m.date) +
         '%" title="' +
         esc(m.label) +
@@ -309,39 +392,23 @@
       group.rows.forEach(function (row) {
         var left = pctLeft(row.start);
         var width = pctWidth(row.start, row.end);
-        var dep = row.deps && row.deps.length ? depLabel(row.deps) : "";
+        var barPx = (offset(row.end) - offset(row.start) + 1) * PX_DAY;
         html += '<div class="gantt-row" data-id="' + esc(row.id) + '">';
         html += '<div class="gantt-col-label">';
-        html += '<p class="gantt-task">' + esc(row.label) + "</p>";
-        html += '<p class="gantt-hint">' + esc(fmtRange(row.start, row.end));
-        if (row.hint) html += " · " + esc(row.hint);
-        html += "</p>";
-        if (dep) {
-          html += '<p class="gantt-dep">После: ' + esc(dep) + "</p>";
-        }
-        html += "</div>";
-        html += '<div class="gantt-col-time"><div class="gantt-track" data-track="' + esc(row.id) + '">';
-        PAUSES.forEach(function (p) {
-          html +=
-            '<div class="gantt-pause-band" style="left:' +
-            pctLeft(p.start) +
-            "%;width:" +
-            pctWidth(p.start, p.end) +
-            '%" title="' +
-            esc(p.label) +
-            '"></div>';
-        });
         html +=
-          '<div class="gantt-future-band" style="left:' +
-          pctLeft(FUTURE.start) +
-          "%;width:" +
-          pctWidth(FUTURE.start, FUTURE.end) +
-          '%" title="' +
-          esc(FUTURE.label) +
-          '"></div>';
+          '<p class="gantt-st gantt-st-' +
+          row.status +
+          '">' +
+          esc(STATUS_RU[row.status] || "") +
+          "</p>";
+        html += '<p class="gantt-task">' + esc(row.label) + "</p>";
+        html += "</div>";
+        html += '<div class="gantt-col-time"><div class="gantt-track">';
+        html += timeBands();
         html +=
           '<div class="gantt-bar gantt-' +
           row.status +
+          (barPx < 88 ? " gantt-bar-tight" : "") +
           '" style="left:' +
           left +
           "%;width:" +
@@ -351,91 +418,19 @@
           ": " +
           fmtRange(row.start, row.end) +
           '">';
-        if (row.milestone) {
-          html += '<span class="gantt-flag" aria-hidden="true"></span>';
-        }
+        html +=
+          '<span class="gantt-bar-label">' +
+          esc(fmtRange(row.start, row.end)) +
+          "</span>";
         html += "</div></div></div></div>";
       });
 
       html += "</div>";
     });
 
-    html += "</div>";
-    html += '<svg class="gantt-deps" id="gantt-deps" aria-hidden="true"></svg>';
-    html += "</div>";
+    html += "</div></div>";
 
     root.innerHTML = html;
-    drawDeps();
-    window.addEventListener("resize", debounce(drawDeps, 120));
-  }
-
-  function debounce(fn, ms) {
-    var t;
-    return function () {
-      clearTimeout(t);
-      t = setTimeout(fn, ms);
-    };
-  }
-
-  function drawDeps() {
-    var svg = document.getElementById("gantt-deps");
-    var body = document.getElementById("gantt-body");
-    var shell = document.querySelector(".gantt-shell");
-    if (!svg || !body || !shell) return;
-
-    var shellRect = shell.getBoundingClientRect();
-    var labelCol = shell.querySelector(".gantt-col-label");
-    if (!labelCol) return;
-
-    svg.setAttribute("width", shellRect.width);
-    svg.setAttribute("height", body.scrollHeight + 8);
-    svg.innerHTML = "";
-
-    GROUPS.forEach(function (group) {
-      group.rows.forEach(function (row) {
-        if (!row.deps || !row.deps.length) return;
-        row.deps.forEach(function (depId) {
-          var fromTrack = shell.querySelector('[data-track="' + depId + '"] .gantt-bar');
-          var toTrack = shell.querySelector('[data-track="' + row.id + '"] .gantt-bar');
-          if (!fromTrack || !toTrack) return;
-
-          var fr = fromTrack.getBoundingClientRect();
-          var tr = toTrack.getBoundingClientRect();
-          var br = body.getBoundingClientRect();
-
-          var x1 = fr.right - shellRect.left;
-          var y1 = fr.top + fr.height / 2 - br.top + body.offsetTop;
-          var x2 = tr.left - shellRect.left;
-          var y2 = tr.top + tr.height / 2 - br.top + body.offsetTop;
-
-          if (x2 <= x1 + 4) return;
-
-          var mid = x1 + (x2 - x1) * 0.45;
-          var path =
-            "M" +
-            x1 +
-            " " +
-            y1 +
-            " C" +
-            mid +
-            " " +
-            y1 +
-            ", " +
-            mid +
-            " " +
-            y2 +
-            ", " +
-            x2 +
-            " " +
-            y2;
-
-          var p = document.createElementNS("http://www.w3.org/2000/svg", "path");
-          p.setAttribute("d", path);
-          p.setAttribute("class", "gantt-dep-line");
-          svg.appendChild(p);
-        });
-      });
-    });
   }
 
   if (document.readyState === "loading") {
